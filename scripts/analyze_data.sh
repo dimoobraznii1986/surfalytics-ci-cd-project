@@ -5,10 +5,11 @@ set -e
 
 # Create output directory if it doesn't exist
 mkdir -p output
+mkdir -p app
 
 # Define data source (replace with your preferred open data source)
 DATA_URL="https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"
-DATA_FILE="/app/covid_data.csv"
+DATA_FILE="./app/covid_data.csv"
 
 # Download data
 echo "Downloading data from ${DATA_URL}..."
@@ -25,6 +26,6 @@ echo "Analyzing data with DuckDB..."
 duckdb "${DB_FILE}" -c ".read ${SQL_FILE}"
 
 # Display results
-echo "\nAnalysis complete. Results saved in /app/output/top_20_locations.csv."
+echo "\nAnalysis complete. Results saved in ./output/top_20_locations.csv."
 echo "\nTop 5 locations by total cases:"
-head -n 6 /app/output/top_20_locations.csv
+head -n 6 ./output/top_20_locations.csv
