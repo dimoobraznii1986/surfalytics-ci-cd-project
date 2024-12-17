@@ -9,7 +9,7 @@ mkdir -p app
 
 # Define data source (replace with your preferred open data source)
 DATA_URL="https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"
-DATA_FILE="./app/covid_data.csv"
+DATA_FILE="/app/covid_data.csv"
 
 # Download data
 echo "Downloading data from ${DATA_URL}..."
