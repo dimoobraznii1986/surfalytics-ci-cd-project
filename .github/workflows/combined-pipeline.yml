@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - published # Trigger when a release is published
+  workflow_dispatch: # Manual trigger for convenience
 
 jobs:
   # Pre-commit job
@@ -18,7 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Ensure full history is fetched
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -35,10 +39,6 @@ jobs:
 
       - name: Run pre-commit hooks
         run: |
-          pre-commit --version
-
-      - name: Run pre-commit on all changed files
-        run: |
           files=$(git diff --name-only origin/main)
           if [ -n "$files" ]; then
             pre-commit run --files $files
@@ -50,7 +50,7 @@ jobs:
   verify-duckdb:
     name: Verify DuckDB Output
     runs-on: ubuntu-latest
-    needs: pre-commit # Ensures this runs after pre-commit job
+    needs: pre-commit
 
     steps:
       - name: Checkout code
@@ -90,7 +90,7 @@ jobs:
   publish:
     name: Publish Docker Image
     runs-on: ubuntu-latest
-    needs: verify-duckdb # Ensures this runs after verification job
+    needs: verify-duckdb
 
     steps:
       - name: Checkout code
@@ -105,18 +105,20 @@ jobs:
       - name: Determine Image Tag
         id: tag
         run: |
-          if [ "${{ github.event_name }}" == "push" ]; then
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          elif [ "${{ github.ref_type }}" == "tag" ]; then
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+          elif [ "${{ github.event_name }}" == "push" ]; then
             echo "tag=latest" >> $GITHUB_ENV
           elif [ "${{ github.event_name }}" == "pull_request" ]; then
             echo "tag=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          else
-            echo "tag=dev-${{ github.sha }}" >> $GITHUB_ENV
           fi
 
       - name: Build Docker Image
         run: |
-          docker build -t dimoobraznii/duckdb-data-analysis:${{ env.tag }} -f .docker/Dockerfile .
+          docker build -t your-dockerhub-username/duckdb-data-analysis:${{ env.tag }} -f .docker/Dockerfile .
 
       - name: Push Docker Image
         run: |
-          docker push dimoobraznii/duckdb-data-analysis:${{ env.tag }}
+          docker push your-dockerhub-username/duckdb-data-analysis:${{ env.tag }}
