@@ -119,4 +119,4 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker push your-dimoobraznii/duckdb/duckdb-data-analysis:${{ env.tag }}
+          docker push dimoobraznii/duckdb/duckdb-data-analysis:${{ env.tag }}
