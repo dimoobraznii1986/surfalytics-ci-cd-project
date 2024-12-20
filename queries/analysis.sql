@@ -8,7 +8,7 @@ SELECT
     MAX(total_cases) as max_total_cases,
     MAX(total_deaths) as max_total_deaths,
     MAX(total_cases_per_million) as max_cases_per_million
-FROM covid_data WHERE continent = 'Canada'--IS NULL --NOT NULL
+FROM covid_data WHERE continent IS NOT NULL
 GROUP BY location ORDER BY max_total_cases DESC LIMIT 20;
 
 -- Output results to CSV
@@ -22,5 +22,5 @@ select
     min(date) as earliest_date,
     max(date) as latest_date
 from covid_data
-where continent is not null
+where continent is not null and location = 'China'
 ;
