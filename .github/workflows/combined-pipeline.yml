@@ -115,8 +115,8 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t your-dockerhub-username/duckdb-data-analysis:${{ env.tag }} -f .docker/Dockerfile .
+          docker build -t dimoobraznii/duckdb-data-analysis:${{ env.tag }} -f .docker/Dockerfile .
 
       - name: Push Docker Image
         run: |
-          docker push your-dockerhub-username/duckdb-data-analysis:${{ env.tag }}
+          docker push your-dimoobraznii/duckdb-data-analysis:${{ env.tag }}
