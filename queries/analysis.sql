@@ -22,5 +22,5 @@ select
     min(date) as earliest_date,
     max(date) as latest_date
 from covid_data
-where continent is not null and location = 'China'
+where continent is not null
 ;
