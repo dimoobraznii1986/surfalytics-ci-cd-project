@@ -9,7 +9,7 @@ SELECT
     MAX(total_deaths) as max_total_deaths,
     MAX(total_cases_per_million) as max_cases_per_million
 FROM covid_data
-WHERE continent IS NOT NULL
+WHERE continent IS NULL --NOT NULL
 GROUP BY location
 ORDER BY max_total_cases DESC
 LIMIT 20;
