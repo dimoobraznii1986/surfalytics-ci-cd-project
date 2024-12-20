@@ -4,9 +4,7 @@ CREATE TABLE covid_data AS SELECT * FROM read_csv_auto('/app/covid_data.csv');
 -- Total cases and deaths by location
 CREATE VIEW location_summary AS
 SELECT
-    location,
-    MAX(total_cases) as max_total_cases,
-    MAX(total_deaths) as max_total_deaths,
+    LOCATION,     MAX(total_cases) as max_total_cases,     MAX(total_deaths) as max_total_deaths,
     MAX(total_cases_per_million) as max_cases_per_million
 FROM covid_data
 WHERE continent IS NULL --NOT NULL
